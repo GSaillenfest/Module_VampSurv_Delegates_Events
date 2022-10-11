@@ -44,13 +44,13 @@ public class EnemyHandler : MonoBehaviour
 
     void Die()
     {
+        gameObject.GetComponent<Collider2D>().enabled = false;
         isHit = true;   
         animator.SetTrigger("Hit");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-            Debug.Log("touché");
         if (collision.gameObject.CompareTag("Projectile"))
         {
             Die();

@@ -23,6 +23,11 @@ public class KillCounting : ScriptableObject
         KillCount++;
         killCountTMP = GameObject.Find("KillCount").GetComponent<TextMeshProUGUI>();
         killCountTMP.text = "Kills : " + KillCount.ToString();
+
+        if (killCount % 5 == 0)
+        {
+            FindObjectOfType<Rewards>().BonusMenu();
+        }
     }
 
     public void ResetCountKills()

@@ -48,11 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: 100
-  maxVelocity: 7.9
+  maxVelocity: 8
   fireRate: 0.8
   projectileSpeed: 10
   playerRb: {fileID: 8375630173655862759}
   projectile: {fileID: 3046663432902649456, guid: 8ef7a6c142cc51f4f920fc0b1416cf40, type: 3}
+  killCounting: {fileID: 11400000, guid: 64da2c9a1ef8c4048889d45d9546e3c4, type: 2}
 --- !u!50 &8375630173655862759
 Rigidbody2D:
   serializedVersion: 4

@@ -23,6 +23,8 @@ public class EnemyDeadBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         killCounting.CountKills();
+        Rewards rewards = FindObjectOfType<Rewards>();
+        rewards.AfterEnemyDeath.Invoke(animator.transform.position);
         Destroy(animator.gameObject);
     }
 

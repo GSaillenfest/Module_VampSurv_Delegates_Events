@@ -179,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8022a0f347601c44d98bc42d3d6ae713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 50
-  maxVelocity: 5
+  force: 100
+  maxVelocity: 6
   enemyRb: {fileID: 8386318163310250800}
   animator: {fileID: 7447470654773384992}
 --- !u!95 &7447470654773384992

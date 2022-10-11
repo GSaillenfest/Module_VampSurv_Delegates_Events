@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float force = 100f;
     [SerializeField] float maxVelocity = 5f;
-    [SerializeField] float fireRate = 1f;
+    [SerializeField] public float fireRate = 1f;
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] Rigidbody2D playerRb;
     [SerializeField] GameObject projectile;
@@ -17,14 +17,15 @@ public class PlayerController : MonoBehaviour
     float horizontalInput;
     float verticalInput;
     float timer;
-    int angleOffset;
     bool isDead;
     Vector2 direction;
+    Rewards rewards;
 
     // Start is called before the first frame update
     void Start()
     {
         timer = 0;
+        rewards = FindObjectOfType<Rewards>();
     }
 
     // Update is called once per frame
@@ -32,8 +33,14 @@ public class PlayerController : MonoBehaviour
     {
         GetMovementInputs();
         FireProjectiles(projectileSpeed);
+        timer += Time.deltaTime;
 
-        if (isDead && Input.GetButtonDown("Fire1"))
+        if (timer > fireRate)
+        {
+            rewards.AfterPlayerAttack.Invoke();
+        }
+
+        if (isDead && Input.GetButtonDown("Jump"))
         {
             Time.timeScale = 1;
             killCounting.ResetCountKills();
@@ -41,29 +48,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void FireProjectiles(float projectileSpeed)
+    public void FireProjectiles(float projectileSpeed, float angleOffset = 0, bool bonus = false)
     {
 
         // (inconclusive) firing is done with Particle effect without timer (done with particleSysteme)
         // 
-        timer += Time.deltaTime;
         if (timer > fireRate / 4)
         {
             gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
         }
         if (timer > fireRate)
         {
-            if (angleOffset == 90 / 15 - 1) angleOffset = 0;
-            else angleOffset++;
+            if (!bonus)
+            {
+                timer = 0;
+            }
 
-            timer = 0;
-
-            gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+            gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.blue;
             for (int i = 0; i < 5; i++)
             {
-                GameObject proj = Instantiate(projectile, transform.position, Quaternion.Euler(0, 0, i * 90 + angleOffset * 15));
+                GameObject proj = Instantiate(projectile, transform.position, Quaternion.Euler(0, 0, i * 90 + angleOffset));
+                if (bonus) proj.GetComponent<SpriteRenderer>().color = Color.magenta;
                 proj.TryGetComponent<MoveForward>(out MoveForward moveForwardspeed);
                 moveForwardspeed.speed = projectileSpeed;
+                
             }
         }
 
