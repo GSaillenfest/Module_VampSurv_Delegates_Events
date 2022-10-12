@@ -9,6 +9,7 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] Rigidbody2D enemyRb;
     [SerializeField] Animator animator;
 
+
     Transform player;
     Vector2 direction;
     bool isHit;
@@ -18,8 +19,13 @@ public class EnemyHandler : MonoBehaviour
         player = FindObjectOfType<PlayerController>().transform;
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        TargetPlayer();
+    }
+
+    // target player and clamp velocity
+    private void TargetPlayer()
     {
         direction = force * (player.position - transform.position).normalized;
 

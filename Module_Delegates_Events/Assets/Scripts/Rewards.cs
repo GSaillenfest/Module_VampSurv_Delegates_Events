@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
+using TMPro;
 
-[System.Serializable]   
+[System.Serializable]
 public class MyEventWithParameter : UnityEvent<Vector3>
 {
 
@@ -16,19 +18,30 @@ public class Rewards : MonoBehaviour
     [SerializeField] float projectileSpeed;
     [SerializeField] GameObject bonusMenu;
 
+    [SerializeField] Button[] bonusButton;
+
     public MyEventWithParameter AfterEnemyDeath;
     public UnityEvent AfterPlayerAttack;
 
+    string[] bonusText = {
 
-    // Start is called before the first frame update
-    void Start()
+            "Double Attack -/- +5 % chance of extra bullet",
+            "Snowball effect -/- Enemy fire bullet after death"
+        };
+
+    public delegate void bonusButtonMethods();
+    public UnityAction[] AddButtonListener = new UnityAction[2];
+
+    private void Start()
     {
+        AddButtonListener = new UnityAction[2] { SelectedDoubleAttack, SelectedBonusBullet };
     }
 
     void BonusBullet(Vector3 enemyPos)
     {
         GameObject proj = Instantiate(projectile, enemyPos, Quaternion.Euler(0, 0, Random.Range(0, 360)));
-        proj.TryGetComponent<MoveForward>(out MoveForward moveForwardspeed);
+        proj.TryGetComponent<ProjectileMoveForward>(out ProjectileMoveForward moveForwardspeed);
+        moveForwardspeed.ChangeColor(Color.yellow);
         moveForwardspeed.speed = projectileSpeed;
     }
 
@@ -47,6 +60,7 @@ public class Rewards : MonoBehaviour
         AfterEnemyDeath.AddListener(BonusBullet);
         Time.timeScale = 1;
         bonusMenu.SetActive(false);
+
     }
 
     public void SelectedDoubleAttack()
@@ -60,5 +74,20 @@ public class Rewards : MonoBehaviour
     {
         Time.timeScale = 0.01f;
         bonusMenu.SetActive(true);
+        int x = 0;
+        int y = 0;
+        while (x == y)
+        {
+            x = Random.Range(0, bonusText.Length);
+            y = Random.Range(0, bonusText.Length);
+        }
+
+        bonusButton[0].onClick.RemoveAllListeners();
+        bonusButton[0].GetComponentInChildren<TextMeshProUGUI>().text = bonusText[x];
+        bonusButton[0].onClick.AddListener(AddButtonListener[x]);
+        bonusButton[1].onClick.RemoveAllListeners();
+        bonusButton[1].GetComponentInChildren<TextMeshProUGUI>().text = bonusText[y];
+        bonusButton[1].onClick.AddListener(AddButtonListener[y]);
+
     }
 }

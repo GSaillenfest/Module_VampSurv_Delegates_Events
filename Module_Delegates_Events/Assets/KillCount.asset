@@ -12,4 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c834708bf401b4c4db86c14c5bcc2e66, type: 3}
   m_Name: KillCount
   m_EditorClassIdentifier: 
-  killCountTMP: {fileID: 0}
+  rewardCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 15.496155
+      inSlope: 40.076572
+      outSlope: 40.076572
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.0301221
+    - serializedVersion: 3
+      time: 100.288956
+      value: 3002.9568
+      inSlope: 76.867386
+      outSlope: 76.867386
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.030101161
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

@@ -35,11 +35,13 @@ public class PlayerController : MonoBehaviour
         FireProjectiles(projectileSpeed);
         timer += Time.deltaTime;
 
+        // Invoking UnityEvent After player attack
         if (timer > fireRate)
         {
             rewards.AfterPlayerAttack.Invoke();
         }
 
+        // Reload scene after game is over
         if (isDead && Input.GetButtonDown("Jump"))
         {
             Time.timeScale = 1;
@@ -52,7 +54,9 @@ public class PlayerController : MonoBehaviour
     {
 
         // (inconclusive) firing is done with Particle effect without timer (done with particleSysteme)
-        // 
+        // change sprite color for feedback.
+        // instantiating projectile in 4 axes, an angle offset can be added, and bonus bool set a different color to projectiles
+
         if (timer > fireRate / 4)
         {
             gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
@@ -68,8 +72,9 @@ public class PlayerController : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 GameObject proj = Instantiate(projectile, transform.position, Quaternion.Euler(0, 0, i * 90 + angleOffset));
-                if (bonus) proj.GetComponent<SpriteRenderer>().color = Color.magenta;
-                proj.TryGetComponent<MoveForward>(out MoveForward moveForwardspeed);
+                proj.TryGetComponent<ProjectileMoveForward>(out ProjectileMoveForward moveForwardspeed);
+                if (bonus) moveForwardspeed.ChangeColor(Color.magenta);
+                else moveForwardspeed.ChangeColor(Color.red);
                 moveForwardspeed.speed = projectileSpeed;
                 
             }

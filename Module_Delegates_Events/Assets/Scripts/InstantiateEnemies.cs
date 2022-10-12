@@ -10,6 +10,10 @@ public class InstantiateEnemies : MonoBehaviour
     [SerializeField] int maxEnemiesLvl;
     [SerializeField] GameObject enemies1;
     [SerializeField] float spawnRate = 1f;
+    [SerializeField] BoxCollider2D upBox;
+    [SerializeField] BoxCollider2D downBox;
+    [SerializeField] BoxCollider2D leftBox;
+    [SerializeField] BoxCollider2D rightBox;
 
     int nbEnemiesLvl = 1;
     float timer;
@@ -18,7 +22,7 @@ public class InstantiateEnemies : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer > 1/(spawnRate*maxEnemiesLvl))
+        if (timer > 1 / (spawnRate * maxEnemiesLvl))
         {
             timer = 0;
             Spawn();
@@ -37,15 +41,48 @@ public class InstantiateEnemies : MonoBehaviour
 
     public void Spawn()
     {
-
+        // instantiating in box colliders (from each edges of the screen)
         if (nbEnemiesLvl < maxEnemiesLvl)
         {
-            Vector2 randomPos = Random.insideUnitCircle;
-            Vector2 spawnpos = (randomPos - Vector2.zero).normalized * Random.Range(21f, 25f) + randomPos;
+            int i = Random.Range(0, 4);
+            Vector2 randomPos;
 
-            Instantiate(enemies1, spawnpos, Quaternion.identity, transform);
+            switch (i)
+            {
+                case 0:
+                    randomPos = RandomInsideBoxCollider(upBox);
+                    break;
+                case 1:
+                    randomPos = RandomInsideBoxCollider(downBox);
+                    break;
+                case 2:
+                    randomPos = RandomInsideBoxCollider(leftBox);
+                    break;
+                case 3:
+                    randomPos = RandomInsideBoxCollider(rightBox);
+                    break;
+                default:
+                    randomPos = Vector2.one * 25f;
+                    break;
+            }
+
+
+            Instantiate(enemies1, randomPos, Quaternion.identity, transform);
             nbEnemiesLvl++;
         }
+    }
+
+    // random position inside a box collider
+    Vector3 RandomInsideBoxCollider(BoxCollider2D boxCollider2D)
+    {
+        Vector3 randomPoint = new Vector3
+            (
+                Random.Range(-boxCollider2D.size.x / 2, boxCollider2D.size.x / 2),
+                Random.Range(-boxCollider2D.size.y / 2, boxCollider2D.size.y / 2)
+            )
+            + boxCollider2D.transform.position;
+        return randomPoint;
+
     }
 
 

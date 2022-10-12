@@ -22,6 +22,7 @@ public class EnemyDeadBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        // incrementing kill count and invoking UnityEvent after enemy death
         killCounting.CountKills();
         Rewards rewards = FindObjectOfType<Rewards>();
         rewards.AfterEnemyDeath.Invoke(animator.transform.position);
