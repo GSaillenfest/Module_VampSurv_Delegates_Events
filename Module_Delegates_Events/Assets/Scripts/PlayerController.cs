@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Rigidbody2D playerRb;
     [SerializeField] GameObject projectile;
     [SerializeField] KillCounting killCounting;
+    [SerializeField] GameObject reloadText ;
 
 
     float horizontalInput;
@@ -20,6 +21,11 @@ public class PlayerController : MonoBehaviour
     bool isDead;
     Vector2 direction;
     Rewards rewards;
+
+    private void OnEnable()
+    {
+        reloadText.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -120,6 +126,7 @@ public class PlayerController : MonoBehaviour
     {
         Time.timeScale = 0;
         isDead = true;
+        reloadText.SetActive(true);
     }
 
 }
