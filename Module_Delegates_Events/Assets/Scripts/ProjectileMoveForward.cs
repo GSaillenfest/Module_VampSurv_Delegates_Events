@@ -22,11 +22,13 @@ public class ProjectileMoveForward : MonoBehaviour
         if (timer > lifeTime) Destroy(gameObject);
     }
 
-    public void ChangeColor(Color color)
+    public void ProjectileSettings(Color color, float projSpeed = 10f, float projLifeTime = 5f)
     {
         GetComponent<SpriteRenderer>().color = color;
         var main = GetComponent<ParticleSystem>().main;
         main.startColor = GetComponent<SpriteRenderer>().color;
+        lifeTime = projLifeTime;
+        speed = projSpeed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

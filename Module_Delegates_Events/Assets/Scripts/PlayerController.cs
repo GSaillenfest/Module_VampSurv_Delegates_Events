@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Rigidbody2D playerRb;
     [SerializeField] GameObject projectile;
     [SerializeField] KillCounting killCounting;
+    [SerializeField] GameObject reloadText ;
 
 
     float horizontalInput;
@@ -20,6 +21,11 @@ public class PlayerController : MonoBehaviour
     bool isDead;
     Vector2 direction;
     Rewards rewards;
+
+    private void OnEnable()
+    {
+        reloadText.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -73,9 +79,8 @@ public class PlayerController : MonoBehaviour
             {
                 GameObject proj = Instantiate(projectile, transform.position, Quaternion.Euler(0, 0, i * 90 + angleOffset));
                 proj.TryGetComponent<ProjectileMoveForward>(out ProjectileMoveForward moveForwardspeed);
-                if (bonus) moveForwardspeed.ChangeColor(Color.magenta);
-                else moveForwardspeed.ChangeColor(Color.red);
-                moveForwardspeed.speed = projectileSpeed;
+                if (bonus) moveForwardspeed.ProjectileSettings(Color.magenta, projectileSpeed*0.7f);
+                else moveForwardspeed.ProjectileSettings(Color.red, projectileSpeed);
                 
             }
         }
@@ -120,6 +125,7 @@ public class PlayerController : MonoBehaviour
     {
         Time.timeScale = 0;
         isDead = true;
+        reloadText.SetActive(true);
     }
 
 }

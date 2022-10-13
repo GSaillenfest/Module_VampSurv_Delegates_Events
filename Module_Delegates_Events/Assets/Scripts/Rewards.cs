@@ -22,6 +22,8 @@ public class Rewards : MonoBehaviour
 
     public MyEventWithParameter AfterEnemyDeath;
     public UnityEvent AfterPlayerAttack;
+    int bonusBulletMax = 3;
+    int bonusBulletCount;
 
     string[] bonusText = {
 
@@ -41,7 +43,7 @@ public class Rewards : MonoBehaviour
     {
         GameObject proj = Instantiate(projectile, enemyPos, Quaternion.Euler(0, 0, Random.Range(0, 360)));
         proj.TryGetComponent<ProjectileMoveForward>(out ProjectileMoveForward moveForwardspeed);
-        moveForwardspeed.ChangeColor(Color.yellow);
+        moveForwardspeed.ProjectileSettings(Color.yellow, 20f, 0.5f);
         moveForwardspeed.speed = projectileSpeed;
     }
 
@@ -57,10 +59,18 @@ public class Rewards : MonoBehaviour
 
     public void SelectedBonusBullet()
     {
-        AfterEnemyDeath.AddListener(BonusBullet);
-        Time.timeScale = 1;
-        bonusMenu.SetActive(false);
-
+        if (bonusBulletCount < bonusBulletMax)
+        {
+            AfterEnemyDeath.AddListener(BonusBullet);
+            bonusBulletCount++;
+        }
+        else if (bonusBulletCount == bonusBulletMax)
+        {
+            bonusText[1] += "! Maximum atteint !";
+            bonusBulletCount++;
+        }
+            Time.timeScale = 1;
+            bonusMenu.SetActive(false);
     }
 
     public void SelectedDoubleAttack()
